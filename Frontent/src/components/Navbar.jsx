@@ -1,78 +1,63 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY && window.scrollY > 80) {
+        setShowNavbar(false); // hide when scrolling down
+      } else {
+        setShowNavbar(true); // show when scrolling up
+      }
+      setLastScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [lastScrollY]);
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur shadow-sm translate-y-2">
+    <nav
+      className={`fixed top-0 left-0 w-full mt-2 z-50 bg-white/90 backdrop-blur shadow-sm transition-transform duration-300 ${
+        showNavbar ? "translate-y-0" : "-translate-y-full"
+      }`}
+    >
       <div className="max-w-7xl mx-auto h-20 flex justify-between items-center px-6">
 
         {/* Logo */}
         <div className="h-full flex items-center">
-          <a href="#Home">
-          <img
-            src="/Image/logo.png"
-            alt="Matla logo"
-            className="h-30 w-auto scale-125 translate-y-6 origin-left"
-          />
+          <a href="#home">
+            <img
+              src="/Image/logo.png"
+              alt="Matla logo"
+              className="h-30 w-auto scale-125 translate-y-6 origin-left"
+            />
           </a>
         </div>
 
         {/* Desktop Menu */}
-       <ul className="hidden md:flex gap-8 text-gray-700 font-medium">
-  <li>
-    <a
-      href="#home"
-      className="relative px-4 py-2 text-gray-600 transition hover:text-red-600
-      after:absolute after:left-0 after:-bottom-1
-      after:h-[2px] after:w-0 after:bg-red-600
-      after:transition-all after:duration-300
-      hover:after:w-full"
-    >
-      Home
-    </a>
-  </li>
-
-  <li>
-    <a
-      href="#about"
-      className="relative px-4 py-2 transition hover:text-red-600
-      after:absolute after:left-0 after:-bottom-1
-      after:h-[2px] after:w-0 after:bg-red-600
-      after:transition-all after:duration-300
-      hover:after:w-full"
-    >
-      About
-    </a>
-  </li>
-
-  <li>
-    <a
-      href="#products"
-      className="relative px-4 py-2 transition hover:text-red-600
-      after:absolute after:left-0 after:-bottom-1
-      after:h-[2px] after:w-0 after:bg-red-600
-      after:transition-all after:duration-300
-      hover:after:w-full"
-    >
-      Product
-    </a>
-  </li>
-
-  <li>
-    <a
-      href="#contact"
-      className="relative px-4 py-2 transition hover:text-red-600
-      after:absolute after:left-0 after:-bottom-1
-      after:h-[2px] after:w-0 after:bg-red-600
-      after:transition-all after:duration-300
-      hover:after:w-full"
-    >
-      Contact
-    </a>
-  </li>
-</ul>
-
+        <ul className="hidden md:flex gap-8 text-gray-700 font-medium">
+          {["Home", "About", "Products", "Contact"].map((item) => (
+            <li key={item}>
+              <a
+                href={`#${item.toLowerCase()}`}
+                className="relative px-4 py-2 transition hover:text-red-600
+                after:absolute after:left-0 after:-bottom-1
+                after:h-[2px] after:w-0 after:bg-red-600
+                after:transition-all after:duration-300
+                hover:after:w-full"
+              >
+                {item}
+              </a>
+            </li>
+          ))}
+        </ul>
 
         {/* Hamburger (Mobile Only) */}
         <button
@@ -87,10 +72,16 @@ const Navbar = () => {
       {open && (
         <div className="md:hidden bg-white shadow">
           <ul className="flex flex-col gap-4 px-6 py-4 text-gray-700 font-medium">
-            <li><a href="#home" onClick={() => setOpen(false)}>Home</a></li>
-            <li><a href="#about" onClick={() => setOpen(false)}>About</a></li>
-            <li><a href="#products" onClick={() => setOpen(false)}>Product</a></li>
-            <li><a href="#contact" onClick={() => setOpen(false)}>Contact</a></li>
+            {["Home", "About", "Products", "Contact"].map((item) => (
+              <li key={item}>
+                <a
+                  href={`#${item.toLowerCase()}`}
+                  onClick={() => setOpen(false)}
+                >
+                  {item}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       )}
