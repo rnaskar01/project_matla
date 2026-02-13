@@ -13,7 +13,7 @@ const About = () => {
       <div className="relative max-w-6xl mx-auto px-6 text-center -mt-58">
 
         {/* Heading */}
-        <h2 className="text-4xl font-bold mb-6 text-[#FFF8E7]">
+        <h2 className="text-4xl font-bold font-serif mb-6 text-[#FFF8E7]">
           About Us
         </h2>
 

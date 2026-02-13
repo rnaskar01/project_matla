@@ -1,8 +1,14 @@
 const Footer = () => {
   return (
-    <footer className="bg-green-900 text-white text-center py-6">
+    <section 
+    className="relative bg-cover bg-center"
+    style={{
+        backgroundImage: "url('/Image/contact_bg.png')",
+      }}>
+    <footer className="text-black font-serif font-semibold text-center py-6">
       © 2026 MATLA. All rights reserved.
     </footer>
+    </section>
   );
 };
 
